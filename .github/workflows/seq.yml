@@ -1,0 +1,22 @@
+name: Sequential Workflow
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "My Name is Shahzeb." > version.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: version-file
+          path: version.txt
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: version-file
+      - run: cat version.txt
